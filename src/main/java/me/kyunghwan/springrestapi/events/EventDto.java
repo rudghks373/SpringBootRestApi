@@ -1,18 +1,11 @@
 package me.kyunghwan.springrestapi.events;
 
-import ch.qos.logback.classic.spi.LoggingEventVO;
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder @AllArgsConstructor @NoArgsConstructor
-@Getter @Setter @EqualsAndHashCode(of = "id") //연관관계 묶음 NO! //엔티티 에는 @Data 어노테이션 NO!
-@Entity
-public class Event {
-
-    @Id @GeneratedValue
-    private Integer id;
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
+public class EventDto {
 
     private String name;
     private String description;
@@ -24,11 +17,5 @@ public class Event {
     private int basePrice; // (optional)
     private int maxPrice; // (optional)
     private int limitOfEnrollment;
-    private boolean offlline;
-    private boolean free;
-
-    @Enumerated(EnumType.STRING)
-    private EventStatus eventStatus = EventStatus.DRAFT;
-
 
 }
