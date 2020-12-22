@@ -19,12 +19,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.stream.IntStream;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,13 +37,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @Import(RestDocsConfigureation.class)
 @ActiveProfiles("test")
-public class EventControllerTests {
+public class  EventControllerTests {
 
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    EventRepository eventRepository;
 
     @Test
     @TestDescription("정상적으로 이벤트를 생성하는 테스트")
@@ -108,7 +113,7 @@ public class EventControllerTests {
                         //단점:정확한 문서를 생성하지 못한다.
                         responseFields(
                                 fieldWithPath("id").description("identifier of new event"),
-                                  fieldWithPath("name").description("Name of new event"),
+                                fieldWithPath("name").description("Name of new event"),
                                 fieldWithPath("description").description("description of new event"),
                                 fieldWithPath("beginEnrollmentDateTime").description("date time begin of new event"),
                                 fieldWithPath("closeEnrollmentDateTime").description("date time close of new event"),
@@ -193,14 +198,43 @@ public class EventControllerTests {
                 .build();
 
         this.mockMvc. perform(post("/api/events")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$[0].objectName").exists())
-                .andExpect(jsonPath("$[0].defaultMeesage").exists())
-                .andExpect(jsonPath("$[0].code").exists())
+                .andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("content[0].objectName").exists())
+                .andExpect(jsonPath("content[0].defaultMessage").exists())
+                .andExpect(jsonPath("content[0].code").exists())
+                .andExpect(jsonPath("_links.index").exists())
         ;
+    }
+
+    @Test
+    @DisplayName("30개의 이벤트를 10개씩 두번째 페이지 조회하기")
+    public void queryEvents() throws Exception{
+        //Given
+        IntStream.range(0,30).forEach(i ->{
+            this.generateEvent(i);
+        });
+
+        //When
+        this.mockMvc.perform(get("/api/events")
+                    .param("page" , "1")
+                    .param("size" , "!0")
+                    .param("sort", "name,DESC"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("page").exists())
+        ;
+    }
+
+    private void generateEvent(int index){
+        Event event = Event.builder()
+                .name("event " + index)
+                .description("test event")
+                .build();
+
+        this.eventRepository.save(event);
     }
 
 
