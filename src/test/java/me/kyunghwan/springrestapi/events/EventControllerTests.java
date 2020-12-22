@@ -54,10 +54,10 @@ public class  EventControllerTests {
         EventDto event = EventDto.builder()
                 .name("Spring")
                 .description("Rest Api")
-                .beginEnrollmentDateTime(LocalDateTime.of(2019,12,20,11,9))
-                .closeEnrollmentDateTime(LocalDateTime.of(2019,12,20,11,10))
-                .beginEventDateTime(LocalDateTime.of(2019,12,20,13,10))
-                .endEventDateTime(LocalDateTime.of(2019,12,23,11,10))
+                .beginEnrollmentDateTime(LocalDateTime.of(2019, 12, 20, 11, 9))
+                .closeEnrollmentDateTime(LocalDateTime.of(2019, 12, 20, 11, 10))
+                .beginEventDateTime(LocalDateTime.of(2019, 12, 20, 13, 10))
+                .endEventDateTime(LocalDateTime.of(2019, 12, 23, 11, 10))
                 .basePrice(100)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
@@ -73,7 +73,7 @@ public class  EventControllerTests {
                 .andExpect(status().isCreated()) //is.("201")
                 .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.CONTENT_TYPE , MediaTypes.HAL_JSON_VALUE))
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
                 .andExpect(jsonPath("free").value(false))
                 .andExpect(jsonPath("offline").value(true))
                 .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
@@ -83,30 +83,30 @@ public class  EventControllerTests {
 
                 .andDo(document("create-event",
                         links(
-                            linkWithRel("self").description("link to self"),
-                            linkWithRel("query-events").description("lint to query events"),
-                            linkWithRel("update-event").description("lint to update an exist event"),
-                            linkWithRel("profile").description("lint to update an exist event")
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("query-events").description("lint to query events"),
+                                linkWithRel("update-event").description("lint to update an exist event"),
+                                linkWithRel("profile").description("lint to update an exist event")
                         ),
                         requestHeaders(
-                             headerWithName(HttpHeaders.ACCEPT).description("accept header"),
-                             headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+                                headerWithName(HttpHeaders.ACCEPT).description("accept header"),
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
                         ),
                         requestFields(
-                             fieldWithPath("name").description("Name of new event"),
-                             fieldWithPath("description").description("description of new event"),
-                             fieldWithPath("beginEnrollmentDateTime").description("date time begin of new event"),
-                             fieldWithPath("closeEnrollmentDateTime").description("date time close of new event"),
-                             fieldWithPath("beginEventDateTime").description("date time begin of new event"),
-                             fieldWithPath("endEventDateTime").description("date time end of new event"),
-                             fieldWithPath("location").description("location of new event"),
-                             fieldWithPath("basePrice").description("base price of new event"),
-                             fieldWithPath("maxPrice").description("max price of new event"),
-                             fieldWithPath("limitOfEnrollment").description("limit of new event")
+                                fieldWithPath("name").description("Name of new event"),
+                                fieldWithPath("description").description("description of new event"),
+                                fieldWithPath("beginEnrollmentDateTime").description("date time begin of new event"),
+                                fieldWithPath("closeEnrollmentDateTime").description("date time close of new event"),
+                                fieldWithPath("beginEventDateTime").description("date time begin of new event"),
+                                fieldWithPath("endEventDateTime").description("date time end of new event"),
+                                fieldWithPath("location").description("location of new event"),
+                                fieldWithPath("basePrice").description("base price of new event"),
+                                fieldWithPath("maxPrice").description("max price of new event"),
+                                fieldWithPath("limitOfEnrollment").description("limit of new event")
                         ),
                         responseHeaders(
-                              headerWithName(HttpHeaders.LOCATION).description("Location header"),
-                              headerWithName(HttpHeaders.CONTENT_TYPE).description("content type")
+                                headerWithName(HttpHeaders.LOCATION).description("Location header"),
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type")
                         ),
                         //Relaxed 접두어
                         //장점:문서 일부분만 테스트 할 수 있다.
@@ -146,10 +146,10 @@ public class  EventControllerTests {
                 .id(100)
                 .name("Spring")
                 .description("Rest Api")
-                .beginEnrollmentDateTime(LocalDateTime.of(2019,12,20,11,9))
-                .closeEnrollmentDateTime(LocalDateTime.of(2019,12,20,11,10))
-                .beginEventDateTime(LocalDateTime.of(2019,12,20,13,10))
-                .endEventDateTime(LocalDateTime.of(2019,12,23,11,10))
+                .beginEnrollmentDateTime(LocalDateTime.of(2019, 12, 20, 11, 9))
+                .closeEnrollmentDateTime(LocalDateTime.of(2019, 12, 20, 11, 10))
+                .beginEventDateTime(LocalDateTime.of(2019, 12, 20, 13, 10))
+                .endEventDateTime(LocalDateTime.of(2019, 12, 23, 11, 10))
                 .basePrice(100)
                 .maxPrice(200)
                 .free(true)
@@ -187,17 +187,17 @@ public class  EventControllerTests {
         EventDto eventDto = EventDto.builder()
                 .name("Spring")
                 .description("Rest Api")
-                .beginEnrollmentDateTime(LocalDateTime.of(2019,12,26,11,9))
-                .closeEnrollmentDateTime(LocalDateTime.of(2019,12,26,11,10))
-                .beginEventDateTime(LocalDateTime.of(2019,12,20,13,10))
-                .endEventDateTime(LocalDateTime.of(2019,12,23,11,10))
+                .beginEnrollmentDateTime(LocalDateTime.of(2019, 12, 26, 11, 9))
+                .closeEnrollmentDateTime(LocalDateTime.of(2019, 12, 26, 11, 10))
+                .beginEventDateTime(LocalDateTime.of(2019, 12, 20, 13, 10))
+                .endEventDateTime(LocalDateTime.of(2019, 12, 23, 11, 10))
                 .basePrice(1000)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("삼성역")
                 .build();
 
-        this.mockMvc. perform(post("/api/events")
+        this.mockMvc.perform(post("/api/events")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
@@ -211,17 +211,17 @@ public class  EventControllerTests {
 
     @Test
     @DisplayName("30개의 이벤트를 10개씩 두번째 페이지 조회하기")
-    public void queryEvents() throws Exception{
+    public void queryEvents() throws Exception {
         //Given
-        IntStream.range(0,30).forEach(i ->{
+        IntStream.range(0, 30).forEach(i -> {
             this.generateEvent(i);
         });
 
-        //When
+        //When & Then
         this.mockMvc.perform(get("/api/events")
-                    .param("page" , "1")
-                    .param("size" , "!0")
-                    .param("sort", "name,DESC"))
+                .param("page", "1")
+                .param("size", "!0")
+                .param("sort", "name,DESC"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.eventList[0]._links.self").exists())
@@ -231,13 +231,43 @@ public class  EventControllerTests {
         ;
     }
 
-    private void generateEvent(int index){
+    @Test
+    @DisplayName("기존의 이벤트를 하나 조회하기")
+    public void getEvent() throws Exception {
+        //Given
+        Event event = this.generateEvent(100);
+
+        //When & Then
+        this.mockMvc.perform(get("/api/events/{id}", event.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.profile").exists())
+                .andDo(document("get-an-event"))
+        ;
+    }
+
+    @Test
+    @DisplayName("없는 이벤트를 조회했을 때 404 응답받기")
+    public void getEvent404() throws Exception{
+        //Given
+
+        //When & Then
+        this.mockMvc.perform(get("/api/events/11883"))
+                .andExpect(status().isNotFound())
+        ;
+    }
+
+
+
+    private Event generateEvent(int index){
         Event event = Event.builder()
                 .name("event " + index)
                 .description("test event")
                 .build();
 
-        this.eventRepository.save(event);
+        return this.eventRepository.save(event);
     }
 
 
