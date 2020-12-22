@@ -75,9 +75,11 @@ public class EventControllerTests {
                 .andExpect(jsonPath("_links.update-event").exists())
 
                 .andDo(document("create-event",
-                        links(linkWithRel("self").description("link to self")
-                            ,linkWithRel("query-events").description("lint to query events")
-                            ,linkWithRel("update-event").description("lint to update an exist event")
+                        links(
+                            linkWithRel("self").description("link to self"),
+                            linkWithRel("query-events").description("lint to query events"),
+                            linkWithRel("update-event").description("lint to update an exist event"),
+                            linkWithRel("profile").description("lint to update an exist event")
                         ),
                         requestHeaders(
                              headerWithName(HttpHeaders.ACCEPT).description("accept header"),
@@ -115,11 +117,12 @@ public class EventControllerTests {
                                 fieldWithPath("maxPrice").description("max price of new event"),
                                 fieldWithPath("limitOfEnrollment").description("limit of new event"),
                                 fieldWithPath("free").description("it tells is this event is free or not"),
-                                fieldWithPath("offline").description("it tells is this offline event or not"),
+                                fieldWithPath("offline").description("it tells is this offline event or  not"),
                                 fieldWithPath("eventStatus").description("event eventStatus"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.query-events.href").description("link to query event list"),
-                                fieldWithPath("_links.update-event.href").description("link to update existing event")
+                                fieldWithPath("_links.update-event.href").description("link to update existing event"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
                         )
                         )
 
