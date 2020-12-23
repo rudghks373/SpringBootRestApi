@@ -31,4 +31,5 @@ public class EventDto {
     @Min(0)
     private int limitOfEnrollment;
 
+
 }
