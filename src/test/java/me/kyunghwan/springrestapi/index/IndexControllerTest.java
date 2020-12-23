@@ -1,5 +1,6 @@
 package me.kyunghwan.springrestapi.index;
 
+import me.kyunghwan.springrestapi.common.BaseControllerTest;
 import me.kyunghwan.springrestapi.common.RestDocsConfigureation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,13 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@Import(RestDocsConfigureation.class)
-@ActiveProfiles("test")
-public class IndexControllerTest {
+public class IndexControllerTest extends BaseControllerTest {
 
     @Autowired
     MockMvc mockMvc;
