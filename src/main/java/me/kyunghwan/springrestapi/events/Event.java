@@ -2,6 +2,7 @@ package me.kyunghwan.springrestapi.events;
 
 import ch.qos.logback.classic.spi.LoggingEventVO;
 import lombok.*;
+import me.kyunghwan.springrestapi.accounts.Account;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,6 +31,8 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = EventStatus.DRAFT;
 
+    @ManyToOne
+    private Account manager;
 
     public void update() {
         //Update Free
