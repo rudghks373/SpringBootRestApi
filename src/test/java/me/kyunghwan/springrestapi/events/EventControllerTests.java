@@ -45,6 +45,7 @@ public class  EventControllerTests extends BaseControllerTest {
     @Autowired
     AccountRepository accountRepository;
 
+    //테스트케이스 간 DB공유가 이루어져 토큰이 중복되어 오류발생
     @BeforeEach
     public void setUp(){
         this.eventRepository.deleteAll();
