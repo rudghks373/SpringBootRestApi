@@ -40,13 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(accountService)
-                    .passwordEncoder(passwordEncoder);
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().mvcMatchers("/docs/index.html");
-        web.ignoring().mvcMatchers().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
+
+
 
 }

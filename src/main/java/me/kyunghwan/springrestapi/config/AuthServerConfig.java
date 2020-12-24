@@ -49,5 +49,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         endpoints.authenticationManager(authenticationManager)
                  .userDetailsService(accountService)
                  .tokenStore(tokenStore);
+
+
     }
 }
