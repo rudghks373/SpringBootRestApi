@@ -3,6 +3,7 @@ package me.kyunghwan.springrestapi.config;
 import me.kyunghwan.springrestapi.accounts.Account;
 import me.kyunghwan.springrestapi.accounts.AccountRole;
 import me.kyunghwan.springrestapi.accounts.AccountService;
+import me.kyunghwan.springrestapi.common.AppProperties;
 import me.kyunghwan.springrestapi.common.BaseControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,25 +23,16 @@ class AuthServerConfigTest extends BaseControllerTest {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    AppProperties appProperties;
+
     @Test
     @DisplayName("인증 토큰을 발급 받는 테스트")
     public void authToken() throws Exception {
-        String username = "ohtest";
-        String password = "pass";
-        Account testAccount = Account.builder()
-                .email(username)
-                .password(password)
-                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-                .build();
-        this.accountService.saveAccount(testAccount);
-
-        String clientId = "myApp";
-        String clientSecret = "pass";
-
         this.mockMvc.perform(post("/oauth/token")
-                    .with(httpBasic(clientId, clientSecret))
-                    .param("username" , username)
-                    .param("password", password)
+                    .with(httpBasic(appProperties.getClientId(), appProperties.getClientSecret()))
+                    .param("username" , appProperties.getUserUsername())
+                    .param("password", appProperties.getUserPassword())
                     .param("grant_type", "password"))
                 .andDo(print())
                 .andExpect(status().isOk())

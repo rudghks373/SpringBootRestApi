@@ -4,6 +4,7 @@ import me.kyunghwan.springrestapi.accounts.Account;
 import me.kyunghwan.springrestapi.accounts.AccountRepository;
 import me.kyunghwan.springrestapi.accounts.AccountRole;
 import me.kyunghwan.springrestapi.accounts.AccountService;
+import me.kyunghwan.springrestapi.common.AppProperties;
 import me.kyunghwan.springrestapi.common.BaseControllerTest;
 import me.kyunghwan.springrestapi.common.TestDescription;
 import org.junit.Before;
@@ -44,6 +45,9 @@ public class  EventControllerTests extends BaseControllerTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    AppProperties appProperties;
 
     //테스트케이스 간 DB공유가 이루어져 토큰이 중복되어 오류발생
     @BeforeEach
@@ -148,22 +152,17 @@ public class  EventControllerTests extends BaseControllerTest {
     }
 
     private String getAccessToken() throws Exception {
-        String username = "ohtest";
-        String password = "pass";
         Account testAccount = Account.builder()
-                .email(username)
-                .password(password)
+                .email(appProperties.getAdminUsername())
+                .password(appProperties.getAdminPassword())
                 .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
                 .build();
         this.accountService.saveAccount(testAccount);
 
-        String clientId = "myApp";
-        String clientSecret = "pass";
-
         ResultActions perform = this.mockMvc.perform(post("/oauth/token")
-                .with(httpBasic(clientId, clientSecret))
-                .param("username", username)
-                .param("password", password)
+                .with(httpBasic(appProperties.getClientId(), appProperties.getClientSecret()))
+                .param("username", appProperties.getAdminUsername())
+                .param("password", appProperties.getAdminPassword())
                 .param("grant_type", "password"))
                 .andDo(print())
                 .andExpect(status().isOk())
