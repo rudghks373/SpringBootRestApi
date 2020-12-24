@@ -1,8 +1,10 @@
 package me.kyunghwan.springrestapi.events;
 
 import ch.qos.logback.classic.spi.LoggingEventVO;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import me.kyunghwan.springrestapi.accounts.Account;
+import me.kyunghwan.springrestapi.accounts.AccountSerializer;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,6 +34,7 @@ public class Event {
     private EventStatus eventStatus = EventStatus.DRAFT;
 
     @ManyToOne
+    @JsonSerialize(using = AccountSerializer.class)
     private Account manager;
 
     public void update() {
