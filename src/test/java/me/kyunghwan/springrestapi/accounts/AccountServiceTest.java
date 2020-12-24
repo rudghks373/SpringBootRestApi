@@ -2,6 +2,7 @@ package me.kyunghwan.springrestapi.accounts;
 
 import org.hamcrest.Matchers;
 import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.rules.ExpectedException;
@@ -31,18 +32,26 @@ class AccountServiceTest {
     AccountService accountService;
 
     @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
+    @BeforeEach
+    public void setUp() {
+        this.accountRepository.deleteAll();
+    }
+
     @Test
-    public void findByUsername()  {
+    public void findByUsername() {
         //Given
         String username = "oh";
         String password = "kyung";
         Account account = new Account().builder()
-                        .email(username)
-                        .password(password)
-                        .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-                        .build();
+                .email(username)
+                .password(password)
+                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+                .build();
         this.accountService.saveAccount(account);
 
         //When
@@ -53,25 +62,25 @@ class AccountServiceTest {
         assertThat(this.passwordEncoder.matches(password, userDetails.getPassword())).isTrue();
     }
 
-    @Test
-    public void findByUsernameFail(){
-        String username = "testtest";
-
-//        //발생할 예외를 미리 적어준다
+//    @Test
+//    public void findByUsernameFail(){
+//        String username = "testtest";
+//
+//       //발생할 예외를 미리 적어준다
 //        expectedException.expect(UsernameNotFoundException.class);
 //        expectedException.expectMessage(Matchers.containsString(username));
 //
 //        //When
 //        accountService.loadUserByUsername(username);
+//
+//        try {
+//            accountService.loadUserByUsername(username);
+//            fail("supposed to be failed");
+//        }catch (UsernameNotFoundException e){
+//            assertThat(e.getMessage()).contains(username);
+//        }
+// }
 
-        try {
-            accountService.loadUserByUsername(username);
-            fail("supposed to be failed");
-        }catch (UsernameNotFoundException e){
-            assertThat(e.getMessage()).contains(username);
-        }
 
-
-    }
 
 }
