@@ -1,5 +1,6 @@
 package me.kyunghwan.springrestapi.config;
 
+
 import me.kyunghwan.springrestapi.accounts.AccountService;
 import me.kyunghwan.springrestapi.common.AppProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
         clients.inMemory()
                 .withClient(appProperties.getClientId())
                 .authorizedGrantTypes("password", "refresh_token")
-                .scopes("read" , "write")
+                .scopes("read", "write")
                 .secret(this.passwordEncoder.encode(appProperties.getClientSecret()))
                 .accessTokenValiditySeconds(10 * 60)
                 .refreshTokenValiditySeconds(6 * 10 * 60);
